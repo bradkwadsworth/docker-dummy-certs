@@ -1,0 +1,121 @@
+[ ca ]
+default_ca = CA_dummy
+
+[ CA_dummy ]
+dir               = /root/ca
+certs             = ${DOLLAR}dir/certs
+crl_dir           = ${DOLLAR}dir/crl
+new_certs_dir     = ${DOLLAR}dir/newcerts
+database          = ${DOLLAR}dir/index.txt
+serial            = ${DOLLAR}dir/serial
+RANDFILE          = ${DOLLAR}dir/private/.rand
+private_key       = $CA_ROOT_KEY
+certificate       = $CA_ROOT_CERT
+crlnumber         = ${DOLLAR}dir/crlnumber
+crl               = ${DOLLAR}dir/crl/ca.crl.pem
+crl_extensions    = crl_ext
+default_crl_days  = 30
+default_md        = sha256
+name_opt          = ca_default
+cert_opt          = ca_default
+default_days      = 375
+preserve          = no
+policy            = policy_strict
+
+[ CA_intermediate_dummy ]
+dir               = /root/ca/intermediate
+certs             = ${DOLLAR}dir/certs
+crl_dir           = ${DOLLAR}dir/crl
+new_certs_dir     = ${DOLLAR}dir/newcerts
+database          = ${DOLLAR}dir/index.txt
+serial            = ${DOLLAR}dir/serial
+RANDFILE          = ${DOLLAR}dir/private/.rand
+private_key       = $CA_INTERMEDIATE_KEY
+certificate       = $CA_INTERMEDIATE_CERT
+crlnumber         = ${DOLLAR}dir/crlnumber
+crl               = $dir/crl/intermediate.crl.pem
+crl_extensions    = crl_ext
+default_crl_days  = 30
+default_md        = sha256
+name_opt          = ca_default
+cert_opt          = ca_default
+default_days      = 375
+preserve          = no
+policy            = policy_loose
+
+[ policy_strict ]
+countryName             = match
+stateOrProvinceName     = match
+organizationName        = match
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+[ policy_loose ]
+countryName             = optional
+stateOrProvinceName     = optional
+localityName            = optional
+organizationName        = optional
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+[ req ]
+default_bits        = 2048
+distinguished_name  = req_distinguished_name
+string_mask         = utf8only
+default_md          = sha256
+x509_extensions     = v3_ca
+
+[ req_distinguished_name ]
+countryName                     = Country Name (2 letter code)
+stateOrProvinceName             = State or Province Name
+localityName                    = Locality Name
+0.organizationName              = Organization Name
+organizationalUnitName          = Organizational Unit Name
+commonName                      = Common Name
+emailAddress                    = Email Address
+countryName_default             = US
+stateOrProvinceName_default     = Wisconsin
+localityName_default            = Milwaukee
+0.organizationName_default      = Dummy Ltd
+
+[ v3_ca ]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical, CA:true
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+
+[ v3_intermediate_ca ]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical, CA:true, pathlen:0
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+
+[ usr_cert ]
+basicConstraints = CA:FALSE
+nsCertType = client, email
+nsComment = "OpenSSL Generated Client Certificate"
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = clientAuth, emailProtection
+
+[ server_cert ]
+basicConstraints = CA:FALSE
+nsCertType = server
+nsComment = "OpenSSL Generated Server Certificate"
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer:always
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+
+[ crl_ext ]
+authorityKeyIdentifier=keyid:always
+
+[ ocsp ]
+basicConstraints = CA:FALSE
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+keyUsage = critical, digitalSignature
+extendedKeyUsage = critical, OCSPSigning
