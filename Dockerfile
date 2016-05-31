@@ -1,6 +1,12 @@
 FROM alpine
 MAINTAINER Brad Wadsworth
 
+ENV CA_ROOT_KEY='/root/ca/private/ca.key.pem' \
+  CA_ROOT_CERT='/root/ca/certs/ca.cert.pem' \
+  CA_INTERMEDIATE_KEY='/root/ca/intermediate/private/intermediate.key.pem' \
+  CA_INTERMEDIATE_CERT='/root/ca/intermediate/certs/intermediate.cert.pem'
+
+
 RUN apk update && \
   apk add openssl gettext && \
   rm /var/cache/apk/*
