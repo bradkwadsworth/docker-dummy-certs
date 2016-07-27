@@ -1,9 +1,7 @@
 FROM alpine
 MAINTAINER Brad Wadsworth
 
-RUN apk update && \
-  apk add openssl && \
-  rm /var/cache/apk/*
+RUN apk --no-cache add openssl
 
 RUN mkdir /etc/ssl/crl /etc/ssl/csr /etc/ssl/newcerts /etc/ssl/CA /etc/ssl/intermediate &&\
   touch /etc/ssl/CA/index.txt &&\
