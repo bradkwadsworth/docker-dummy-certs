@@ -76,8 +76,8 @@ organizationalUnitName          = Organizational Unit Name
 commonName                      = Common Name
 emailAddress                    = Email Address
 countryName_default             = US
-stateOrProvinceName_default     = Wisconsin
-localityName_default            = Milwaukee
+stateOrProvinceName_default     = Dumdum
+localityName_default            = Duh
 0.organizationName_default      = Dummy Ltd
 
 [ v3_ca ]
