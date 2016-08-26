@@ -1,13 +1,28 @@
 #!/bin/sh
 set -e
 
-CA_ROOT_KEY=/etc/ssl/private/ca.key
-CA_ROOT_CERT=/etc/ssl/certs/ca.pem
-CA_INTERMEDIATE_KEY=/etc/ssl/private/intermediate.key
-CA_INTERMEDIATE_CERT=/etc/ssl/certs/intermediate.pem
-KEY=/etc/ssl/private/cert.key
-CERT=/etc/ssl/certs/cert.pem
-CSR=/etc/ssl/csr/cert.csr
+CA_ROOT_KEY=$CERTSDIR/private/ca.key
+CA_ROOT_CERT=$CERTSDIR/certs/ca.pem
+CA_INTERMEDIATE_KEY=$CERTSDIR/private/intermediate.key
+CA_INTERMEDIATE_CERT=$CERTSDIR/certs/intermediate.pem
+KEY=$CERTSDIR/private/cert.key
+CERT=$CERTSDIR/certs/cert.pem
+CSR=$CERTSDIR/csr/cert.csr
+
+if [ ! $(ls -A $CERTSDIR 2>/dev/null) ]; then
+  mkdir -p $CERTSDIR/crl \
+    $CERTSDIR/csr \
+    $CERTSDIR/newcerts \
+    $CERTSDIR/CA \
+    $CERTSDIR/intermediate \
+    $CERTSDIR/private \
+    $CERTSDIR/certs
+  touch ${CERTSDIR}/CA/index.txt
+  echo 1000 > $CERTSDIR/CA/serial
+  touch $CERTSDIR/intermediate/index.txt
+  echo 1000 > ${CERTSDIR}/intermediate/serial
+  echo 1000 > ${CERTSDIR}/intermediate/crlnumber
+fi
 
 create_ca () {
   if [ ! -f "${CA_ROOT_KEY}" ]; then
@@ -53,7 +68,7 @@ create_intermediate () {
     echo
     openssl req -config /etc/ssl/openssl.cnf -new -sha256 \
       -key "${CA_INTERMEDIATE_KEY}" \
-      -out /etc/ssl/csr/intermediate.csr
+      -out $CERTSDIR/intermediate.csr
 
     echo
     echo "-------------------------------------------------------------------------------"
@@ -62,7 +77,7 @@ create_intermediate () {
     echo
     openssl ca -config /etc/ssl/openssl.cnf -extensions v3_intermediate_ca \
       -days 3650 -notext -md sha256 \
-      -in /etc/ssl/csr/intermediate.csr \
+      -in $CERTSDIR/intermediate.csr \
       -out "${CA_INTERMEDIATE_CERT}"
   fi
 
@@ -204,3 +219,6 @@ echo
 echo "----------------------------------------------------------------------"
 cat "${CERT}"
 echo "----------------------------------------------------------------------"
+
+find $CERTSDIR -type d -exec chmod 777 {} \;
+find $CERTSDIR -type f -exec chmod 666 {} \;

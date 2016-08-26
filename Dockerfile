@@ -1,14 +1,10 @@
 FROM alpine
 MAINTAINER Brad Wadsworth
 
-RUN apk --no-cache add openssl
+ENV CERTSDIR /certs
+ENV SAN DNS:localhost
 
-RUN mkdir /etc/ssl/crl /etc/ssl/csr /etc/ssl/newcerts /etc/ssl/CA /etc/ssl/intermediate &&\
-  touch /etc/ssl/CA/index.txt &&\
-  echo 1000 > /etc/ssl/CA/serial  &&\
-  touch /etc/ssl/intermediate/index.txt &&\
-  echo 1000 > /etc/ssl/intermediate/serial &&\
-  echo 1000 > /etc/ssl/intermediate/crlnumber
+RUN apk --no-cache add openssl
 
 ADD openssl.cnf /etc/ssl/
 ADD create-certs.sh /

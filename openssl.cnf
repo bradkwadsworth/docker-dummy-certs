@@ -2,7 +2,7 @@
 default_ca = CA_dummy
 
 [ CA_dummy ]
-dir               = /etc/ssl
+dir               = ${ENV::CERTSDIR}
 certs             = $dir/certs
 crl_dir           = $dir/crl
 new_certs_dir     = $dir/newcerts
@@ -23,7 +23,7 @@ preserve          = no
 policy            = policy_strict
 
 [ CA_intermediate_dummy ]
-dir               = /etc/ssl
+dir               = ${ENV::CERTSDIR}
 certs             = $dir/certs
 crl_dir           = $dir/crl
 new_certs_dir     = $dir/newcerts
@@ -109,6 +109,7 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid,issuer:always
 keyUsage = critical, digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth
+subjectAltName = ${ENV::SAN}
 
 [ crl_ext ]
 authorityKeyIdentifier=keyid:always
