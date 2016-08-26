@@ -11,9 +11,6 @@ docker run --rm -ti bradkwadsworth/dummy-certs
 To use existing CA and intermediate certificates:
 ````
 docker run --rm -ti \
-  -v /path/to/ca/key:/etc/ssl/private/ca.key \
-  -v /path/to/ca/cert:/etc/ssl/certs/ca.pem \
-  -v /path/to/intermediate/key:/etc/ssl/private/intermediate.key \
-  -v /path/to/intermediate/cert:/etc/ssl/certs/intermediate.pem \
+  -v /path/to/certs/dir:/certs \
   bradkwadsworth/dummy-certs
   ````
