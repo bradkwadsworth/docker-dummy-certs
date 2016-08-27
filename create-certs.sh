@@ -5,9 +5,9 @@ CA_ROOT_KEY=$CERTSDIR/private/ca.key
 CA_ROOT_CERT=$CERTSDIR/certs/ca.pem
 CA_INTERMEDIATE_KEY=$CERTSDIR/private/intermediate.key
 CA_INTERMEDIATE_CERT=$CERTSDIR/certs/intermediate.pem
-KEY=$CERTSDIR/private/cert.key
-CERT=$CERTSDIR/certs/cert.pem
-CSR=$CERTSDIR/csr/cert.csr
+KEY=$CERTSDIR/private/server.key
+CERT=$CERTSDIR/certs/server.pem
+CSR=$CERTSDIR/csr/server.csr
 
 if [ ! $(ls -A $CERTSDIR 2>/dev/null) ]; then
   mkdir -p $CERTSDIR/crl \
