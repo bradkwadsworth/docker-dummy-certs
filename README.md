@@ -1,4 +1,4 @@
-# docker-dummy-certs
+# dummy-certs
 
 ## What Does it Do?
 It creates SSL certificates that are signed by either a custom CA, CA with an intermediate, or self-signed. A custom CA or intermediate certificate that already exists can also be used to sign the certificates.
